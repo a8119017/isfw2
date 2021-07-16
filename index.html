@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 
+<!DOCTYPE html>
+
 <html>
 
 <head>
+    <link rel="stylesheet" href="first.css">
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <script type="text/javascript" src="lib/jquery.min.js"></script>
-    <script type="text/javascript" src="lib/osql.js"></script>
+    <script type="text/javascript" src="../jquery.min.js"></script>
+    <script type="text/javascript" src="../settings.js"></script>
+    <script type="text/javascript" src="../osql.js"></script>
 
     <script>
-        osql.requireLogin();
+        async function button1Pressed() {
+            var userid = document.getElementById('tf5').value;
+            var password = document.getElementById('tf6').value;
 
-        async function buttonPressed() {
-            var userid = document.getElementById('tf1').value;
-            var password = document.getElementById('tf2').value;
-
-            var sql = `select * from Users where id="${userid}";`;
+            var sql = `select * from Students where id="${userid}";`;
             var objects = await osql.connect(sql);
             if (objects.length <= 0) {
                 document.getElementById('result').innerHTML = 'ログイン失敗：ユーザが見つかりません';
@@ -26,8 +29,10 @@
                 return;
             }
 
-            sessionStorage.setItem('userid', objects[0].id);
-            sessionStorage.setItem('username', objects[0].name);
+            sessionStorage.setItem('id', objects[0].id);
+            sessionStorage.setItem('student', objects[0].student);
+
+
 
             location.href = 'usertop.html';
         }
@@ -36,20 +41,20 @@
 </head>
 
 <body>
-    <h1>ユーザ管理　アプリケーション　v3</h1>
+    <h1>時間割アプリ</h1>
     <div>
         <h2>ログイン</h2>
-        userid:<input id="tf1" value="" type="textfield">
+        userid:<input id="tf5" value="" type="textfield">
         <br>
-        password:<input id="tf2" value="" type="password">
+        password:<input id="tf6" value="" type="password">
         <br>
-        <button onclick="buttonPressed()">ログイン</button>
+        <button onclick="button1Pressed()">ログイン</button>
         <p id="result"></p>
     </div>
     <hr>
     <p><a href="register.html">新規登録</a></p>
     <hr>
-    <p style="text-align: right"><a href="admintop.html">管理者ページ</a></p>
+    <p><a href="update.html">ユーザー情報の変更</a></p>
 </body>
 
 </html>
